@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pompare Beton la Domiciliu & Servicii Construcții — Andrei Ionuț</title>
+<meta name="description" content="Pompăm beton și șape în Cluj, Alba și Sălaj. Distanțe de peste 100 m.l. Oferim și servicii complete de renovări, construcții și demolări.">
+
+<!-- Tailwind + GSAP pentru animații fluide -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<style>
+:root {
+  --brand: #f59e0b;         /* Galben vibrant de șantier/utilaje */
+  --brand-bright: #ff6b6b;  /* Accent portocaliu-roșiatic plin de viață */
+  --accent: #25d366;        /* Verde WhatsApp */
+  --bg: #f8fafc;            /* Fundal deschis, curat și luminos */
+  --surface: #ffffff;       /* Carduri albe imaculate */
+  --text-main: #0f172a;     /* Text închis foarte lizibil */
+  --text-muted: #475569;    /* Text secundar gri */
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text-main);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* ── Fundal Colorat Energetic ── */
+.bg-gradient-shapes {
+  position: absolute; top: 0; left: 0; right: 0; height: 900px;
+  background: linear-gradient(135deg, #fef3c7 0%, #fff7ed 60%, #f0fdf4 100%);
+  z-index: -2;
+  overflow: hidden;
+}
+.shape { position: absolute; border-radius: 50%; opacity: 0.5; filter: blur(70px); pointer-events: none; }
+.shape-1 { width: 450px; height: 450px; background: #fbbf24; top: -120px; right: -50px; }
+.shape-2 { width: 500px; height: 500px; background: #fdba74; top: 250px; left: -150px; }
+
+/* ── Navigație ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.85);
+  border-bottom: 2px solid #e2e8f0;
+  padding: 16px 32px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+nav .logo { font-weight: 900; font-size: 1.4rem; color: #0f172a; display: flex; align-items: center; gap: 8px; }
+nav ul { display: flex; gap: 28px; list-style: none; align-items: center; }
+nav a { color: var(--text-muted); text-decoration: none; font-size: 1rem; font-weight: 600; transition: color 0.2s; }
+nav a:hover { color: #d97706; }
+
+.nav-cta {
+  background: linear-gradient(135deg, #25d366, #128c7e); color: #fff !important;
+  padding: 12px 24px; border-radius: 50px; font-weight: 700;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+  transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+}
+.nav-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); }
+
+@media (max-width: 900px) { nav ul { display: none; } }
+
+/* ── Hero Section ── */
+.hero {
+  min-height: 80vh;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center; padding: 160px 24px 40px;
+}
+.hero h1 {
+  font-size: clamp(2.4rem, 6vw, 4.2rem); font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 24px; color: #0f172a;
+}
+.hero h1 span.highlight {
+  background: linear-gradient(125deg, #ea580c, #eab308); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero p { font-size: clamp(1.1rem, 2.2vw, 1.35rem); color: #334155; max-width: 850px; margin: 0 auto 44px; font-weight: 500; }
+
+/* Butoane Aranjate Frumos */
+.hero-ctas { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+.btn-call {
+  background: linear-gradient(135deg, #ea580c, #f97316); color: #fff;
+  padding: 18px 38px; border-radius: 50px; font-weight: 800; text-decoration: none; font-size: 1.1rem;
+  box-shadow: 0 10px 25px rgba(234, 88, 12, 0.3); transition: all 0.3s; display: inline-flex; align-items: center; gap: 10px;
+}
+.btn-call:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(234, 88, 12, 0.45); }
+
+.btn-whatsapp {
+  background: linear-gradient(135deg, #25d366, #20ba5a); color: #fff;
+  padding: 18px 38px; border-radius: 50px; font-weight: 800; text-decoration: none; font-size: 1.1rem;
+  box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3); transition: all 0.3s; display: inline-flex; align-items: center; gap: 10px;
+}
+.btn-whatsapp:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(37, 211, 102, 0.45); }
+
+/* ── Zone Acoperire / Info Rapid ── */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; max-width: 1100px; margin: 20px auto 0; padding: 0 24px; }
+.stat { text-align: center; background: var(--surface); padding: 24px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 2px solid #edf2f7; }
+.stat .num { font-size: 1.8rem; font-weight: 900; color: #ea580c; display: block; margin-bottom: 4px; }
+.stat .label { color: #475569; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; }
+
+/* ── Secțiuni ── */
+section { padding: 100px 24px; max-width: 1200px; margin: 0 auto; }
+.section-title { font-size: clamp(2.2rem, 4.5vw, 3rem); font-weight: 900; letter-spacing: -0.02em; text-align: center; margin-bottom: 16px; color: #0f172a; }
+.section-subtitle { color: #475569; text-align: center; max-width: 750px; margin: 0 auto 64px; font-size: 1.15rem; font-weight: 500; }
+
+/* ── Carduri Servicii ── */
+.services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 32px; }
+.service-card { background: var(--surface); border: 2px solid #edf2f7; border-radius: 24px; padding: 40px; transition: all 0.3s; box-shadow: 0 10px 35px rgba(0,0,0,0.02); }
+.service-card:hover { transform: translateY(-8px); border-color: #fde68a; box-shadow: 0 20px 40px rgba(234, 88, 12, 0.08); }
+.service-icon { width: 64px; height: 64px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 28px; }
+
+.bg-icon-1 { background: #fef3c7; color: #d97706; }
+.bg-icon-2 { background: #dbeafe; color: #2563eb; }
+.bg-icon-3 { background: #d1fae5; color: #059669; }
+
+.service-card h3 { font-size: 1.4rem; font-weight: 800; margin-bottom: 14px; color: #0f172a; }
+.service-card p { color: #475569; font-size: 1rem; }
+.service-list { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 10px; }
+.service-tag { background: #f1f5f9; padding: 6px 14px; border-radius: 50px; font-size: 0.85rem; color: #334155; font-weight: 600; border: 1px solid #e2e8f0; }
+
+/* ── Secțiune Nouă: Servicii Complete ── */
+.alt-section { background: linear-gradient(135deg, #ffedd5 0%, #fef9c3 100%); border-radius: 40px; margin: 40px auto; padding: 80px 40px; max-width: 1240px; }
+@media(max-width:640px) { .alt-section { border-radius: 0; padding: 60px 20px; } }
+
+/* ── Formular și Contact ── */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+@media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; gap: 40px; } }
+.contact-info { display: flex; flex-direction: column; gap: 20px; }
+
+.contact-item { display: flex; align-items: center; gap: 20px; padding: 24px; background: var(--surface); border: 2px solid #edf2f7; border-radius: 24px; text-decoration: none; color: inherit; transition: all 0.2s; box-shadow: 0 10px 25px rgba(0,0,0,0.02); }
+.contact-item:hover { border-color: #ea580c; transform: translateX(6px); }
+.contact-item-icon { width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+
+.contact-form { background: var(--surface); border: 2px solid #edf2f7; border-radius: 32px; padding: 40px; display: flex; flex-direction: column; gap: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.03); }
+.contact-form label { font-size: 0.95rem; color: #0f172a; font-weight: 700; margin-bottom: 4px; display: block; }
+.contact-form input, .contact-form textarea { background: #f8fafc; border: 2px solid #e2e8f0; color: #0f172a; padding: 16px; border-radius: 14px; font-family: inherit; font-size: 1rem; transition: all 0.2s; width: 100%; }
+.contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: #ea580c; background: #fff; box-shadow: 0 0 0 4px rgba(234, 88, 12, 0.1); }
+
+footer { border-top: 2px solid #e2e8f0; padding: 40px 24px; text-align: center; color: #475569; font-size: 1rem; font-weight: 500; background: #fff; }
+
+.reveal { opacity: 0; transform: translateY(30px); }
+</style>
+</head>
+<body>
+
+<!-- Fundal Colorat Mobil -->
+<div class="bg-gradient-shapes">
+  <div class="shape shape-1"></div>
+  <div class="shape shape-2"></div>
+</div>
+
+<!-- Navigație -->
+<nav>
+  <div class="logo">🏗️ Andrei Ionuț</div>
+  <ul>
+    <li><a href="#pompare">Pompare Beton</a></li>
+    <li><a href="#specializari">Specializări</a></li>
+    <li><a href="#constructii">Construcții & Renovări</a></li>
+    <li><a href="#contact">Solicită Ofertă</a></li>
+  </ul>
+  <a href="https://wa.me/40774030623" class="nav-cta">
+    💬 WhatsApp Online
+  </a>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div>
+    <h1 class="reveal">Pompare Beton la Domiciliu și <span class="highlight">Servicii Complete</span></h1>
+    <p class="reveal">Pompăm beton și șape rapid și eficient. Avem posibilitate tehnică de pompare de peste <b>100 de metri liniari</b> cu coloane profesionale de <b>*65 și *80</b>. Sunați pentru o ofertă personalizată!</p>
+    
+    <div class="hero-ctas reveal">
+      <a href="tel:+40774030623" class="btn-call">
+        📞 Sună Acum: 0774 030 623
+      </a>
+      <a href="https://wa.me/40774030623" class="btn-whatsapp">
+        💬 Cere Preț pe WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Info Rapid / Zone Acoperite -->
+<div class="stats reveal">
+  <div class="stat"><span class="num">Județul Cluj</span><span class="label">Zonă de acoperire</span></div>
+  <div class="stat"><span class="num">Județul Alba</span><span class="label">Zonă de acoperire</span></div>
+  <div class="stat"><span class="num">Județul Sălaj</span><span class="label">Zonă de acoperire</span></div>
+  <div class="stat"><span class="num">&gt; 100 m.l.</span><span class="label">Capacitate de pompare</span></div>
+</div>
+
+<!-- Secțiune Pompare -->
+<section id="pompare">
+  <h2 class="section-title reveal">Pompare Profesionistă Beton și Șape</h2>
+  <p class="section-subtitle reveal">Echipamente moderne potrivite pentru orice tip de șantier rezidențial sau comercial, chiar și în zone greu accesibile.</p>
+  
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-icon bg-icon-1">⚙️</div>
+      <h3>Coloane de *65 & *80</h3>
+      <p>Deținem logistica necesară pentru a pompa beton pe distanțe lungi (peste 100 m.l.), asigurând un flux continuu și o turnare perfectă.</p>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="service-icon bg-icon-2">📍</div>
+      <h3>Acoperire Regională</h3>
+      <p>Ne deplasăm rapid la domiciliul dumneavoastră în județele <b>Cluj, Alba și Sălaj</b>. Promptitudinea și corectitudinea ne definesc.</p>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="service-icon bg-icon-3">💵</div>
+      <h3>Oferte Personalizate</h3>
+      <p>Prețurile sunt calculate corect în funcție de distanța de pompare și volumul de beton. Sunați-ne pentru o cotație exactă instantanee.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Secțiune Specializări (Fundal Ambiental) -->
+<div class="alt-section" id="specializari">
+  <section style="padding: 0;">
+    <h2 class="section-title reveal">Specializările Noastre în Zidărie și Beton</h2>
+    <p class="section-subtitle reveal">Executăm lucrări structurale durabile, de la fundații solide până la finisaje moderne.</p>
+    
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon bg-icon-1">🧱</div>
+        <h3>Structuri & Zidărie</h3>
+        <p>Realizăm fundații de case, plăci de beton armat rezistente și zidărie din cărămidă sau BCA la cele mai înalte standarde.</p>
+        <div class="service-list">
+          <span class="service-tag">Fundații</span>
+          <span class="service-tag">Plăci beton</span>
+          <span class="service-tag">Zidărie</span>
+        </div>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-icon bg-icon-3">🎨</div>
+        <h3>Beton Amprentat & Izolații</h3>
+        <p>Amenajăm curți cu beton amprentat decorativ rezistent și oferim servicii profesionale de hidroizolații și placări cu polistiren.</p>
+        <div class="service-list">
+          <span class="service-tag">Beton Amprentat</span>
+          <span class="service-tag">Hidroizolații</span>
+          <span class="service-tag">Placări Polistiren</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Servicii Noi Complete -->
+<section id="constructii">
+  <h2 class="section-title reveal">*NOU* Servicii Complete de Construcții</h2>
+  <p class="section-subtitle reveal">Ne ocupăm de proiectul tău de la A la Z. De la punerea la pământ a structurilor vechi până la finisaje moderne.</p>
+  
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-icon bg-icon-1">🏠</div>
+      <h3>Construcții de la Zero</h3>
+      <p>Echipe calificate pentru ridicarea caselor, anexelor sau gardurilor. Lucrăm curat, eficient și respectăm termenele stabilite.</p>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="service-icon bg-icon-2">🔨</div>
+      <h3>Renovări Interioare & Exterioare</h3>
+      <p>Modernizăm spațiile vechi folosind materiale de calitate. Finisaje, tencuieli și amenajări complete adaptate bugetului tău.</p>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="service-icon bg-icon-3">🚜</div>
+      <h3>Demolări & Pregătire Teren</h3>
+      <p>Demolăm în siguranță clădiri sau elemente de beton vechi și evacuăm molozul pentru a lăsa terenul pregătit de noi construcții.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Contact direct și curat -->
+<section id="contact" style="border-top: 2px solid #edf2f7;">
+  <h2 class="section-title reveal">Ia Legătura Cu Noi Non-Stop</h2>
+  <p class="section-subtitle reveal">Apelează numărul de telefon direct sau trimite un mesaj pe WhatsApp pentru un calcul rapid de preț.</p>
+  
+  <div class="contact-grid">
+    <div class="contact-info">
+      <a href="tel:+40774030623" class="contact-item reveal">
+        <div class="contact-item-icon" style="background:#fef3c7; color:#d97706;">📞</div>
+        <div>
+          <span style="font-size: 0.85rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Apasă pentru a suna</span>
+          <b style="display:block; font-size:1.2rem;">0774 030 623</b>
+        </div>
+      </a>
+
+      <a href="https://wa.me/40774030623" class="contact-item reveal">
+        <div class="contact-item-icon" style="background:#d1fae5; color:#059669;">💬</div>
+        <div>
+          <span style="font-size: 0.85rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Discută pe WhatsApp</span>
+          <b style="display:block; font-size:1.1rem; color:#059669;">Click pentru detalii pe WhatsApp</b>
+        </div>
+      </a>
+    </div>
+
+    <!-- Formular inteligent către WhatsApp -->
+    <form class="contact-form reveal" onsubmit="handleFormSubmit(event)">
+      <div>
+        <label for="f-name">Numele dumneavoastră</label>
+        <input id="f-name" type="text" required placeholder="Ex: Popa Andrei">
+      </div>
+      <div>
+        <label for="f-location">Localitate / Județ lucrare</label>
+        <input id="f-location" type="text" required placeholder="Ex: Cluj-Napoca, Turda, Zalău etc.">
+      </div>
+      <div>
+        <label for="f-msg">Detalii despre lucrare (Volum beton, distanță turnare etc.)</label>
+        <textarea id="f-msg" required placeholder="Ex: Am nevoie de pompare beton pentru o placă de casă, aproximativ 15 mc, distanța de la drum este de cca 40 metri."></textarea>
+      </div>
+      <button type="submit" class="btn-whatsapp" style="justify-content:center; border:none; cursor:pointer; width:100%;">
+        Trimite Detaliile pe WhatsApp
+      </button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  © <span id="year"></span> Andrei Ionuț — Servicii de Pompare Beton, Șape și Construcții Generale. ID Anunț: 284784825.
+</footer>
+
+<script>
+// Setează automat anul curent în footer
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// Animații la scroll (GSAP)
+gsap.registerPlugin(ScrollTrigger);
+gsap.utils.toArray('.reveal').forEach(el => {
+  gsap.fromTo(el, 
+    { opacity: 0, y: 30 },
+    { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', scrollTrigger: { trigger: el, start: 'top 88%' } }
+  );
+});
+
+// Trimitere inteligentă direct către numărul tău de WhatsApp
+function handleFormSubmit(e) {
+  e.preventDefault();
+  const name = document.getElementById('f-name').value;
+  const location = document.getElementById('f-location').value;
+  const msg = document.getElementById('f-msg').value;
+  
+  const textMsg = `Bună ziua, Andrei Ionuț! Mă numesc ${name}. Aș dori o ofertă de preț pentru o lucrare în localitatea ${location}. Detalii: ${msg}`;
+  const whatsappUrl = `https://wa.me/40774030623?text=${encodeURIComponent(textMsg)}`;
+  
+  window.open(whatsappUrl, '_blank');
+  e.target.reset();
+}
+</script>
+
+</body>
+</html>
